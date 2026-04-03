@@ -26,7 +26,7 @@ function computeScore(records: typeof carrierPerformance.$inferSelect[]): number
     (records.filter((r) => r.communicationScore != null).length || 1);
   const commNorm = avgComm / 5;
 
-  return Math.round((onTimePickup * 30 + onTimeDelivery * 35 + noDamage * 15 + noClaim * 10 + commNorm * 10) * 100);
+  return Math.round(onTimePickup * 30 + onTimeDelivery * 35 + noDamage * 15 + noClaim * 10 + commNorm * 10);
 }
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
