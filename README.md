@@ -1,18 +1,23 @@
 # 🚛 Warp Tools
 
-**Free, open-source tools for the logistics industry.**
+**Free, open-source logistics systems. Not calculators — real software that replaces your spreadsheets.**
 
-Built by [Warp](https://wearewarp.com) — because shippers shouldn't pay $500/mo for basic tools.
+Built by [Warp](https://wearewarp.com) — because logistics companies shouldn't pay $500/mo for basic operational software.
 
-## Tools
+## Systems
 
-| Tool | Description | Status |
-|------|-------------|--------|
-| **BOL Generator** | Generate professional Bills of Lading as PDF | 🔨 Building |
-| **Freight Class Calculator** | NMFC class lookup + density calculator | 📋 Planned |
-| **Rate Estimator** | Estimate freight costs across LTL/FTL/Parcel | 📋 Planned |
-| **Pallet Calculator** | Visual trailer loading optimizer | 📋 Planned |
-| **Appointment Scheduler** | Dock door / delivery scheduling | 📋 Planned |
+| System | What It Replaces | Status |
+|--------|-----------------|--------|
+| **Carrier Management** | Your carrier spreadsheet, expired insurance surprises, guessed performance | 📋 Specced |
+| **Invoice & Payment Tracker** | Excel aging reports, manual follow-up, lost invoices | 📋 Planned |
+| **Document Vault** | Email attachments, shared drives, "where's the POD?" | 📋 Planned |
+| **Load Board / Dispatch** | Email chains, WhatsApp groups, phone calls | 📋 Planned |
+| **Dock / Appointment Scheduler** | Phone calls, paper sign-in sheets | 📋 Planned |
+| **Driver & Settlement** | Excel pay calculations, disputes | 📋 Planned |
+| **Rate Management** | Emailed rate sheets, manual comparisons | 📋 Planned |
+| **Mini TMS** | All of the above glued together with spreadsheets | 📋 Planned |
+
+Each system works standalone. Together they're a platform.
 
 [View full roadmap →](https://github.com/dasokolovsky/warp-tools/issues)
 
@@ -31,32 +36,36 @@ npm install
 npm run dev
 ```
 
-Each tool in `apps/` is independently deployable. See individual READMEs for details.
+Each system in `apps/` is independently deployable. See individual READMEs for details.
 
 ## Tech Stack
 
 - **Next.js 15** — React framework with App Router
-- **Tailwind CSS** — Utility-first styling
+- **Tailwind CSS + shadcn/ui** — Consumer-app quality design
+- **Drizzle ORM** — Type-safe database access (Postgres + SQLite)
 - **Turborepo** — Monorepo build system
-- **Supabase** — Auth + database (hosted version)
+- **Supabase** — Auth, database, storage (hosted version)
 
 ## Project Structure
 
 ```
 warp-tools/
-├── apps/                    # Individual tools
-│   ├── bol-generator/       # Bill of Lading generator
+├── apps/
+│   ├── carrier-management/  # Carrier relationship management
+│   ├── invoice-tracker/     # Invoice & payment tracking
+│   ├── document-vault/      # Shipping document management
 │   └── ...
 ├── packages/
 │   ├── ui/                  # Shared design system
-│   ├── freight-core/        # Logistics calculations
+│   ├── db/                  # Shared database schema
+│   ├── auth/                # Auth helpers
 │   └── config/              # Shared configs
 └── turbo.json
 ```
 
 ## Contributing
 
-PRs welcome! Each tool has its own spec in the project wiki. Pick one and build.
+PRs welcome! Check `specs/` for detailed system specifications.
 
 ## License
 
