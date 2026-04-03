@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, X, Loader2 } from 'lucide-react';
+import { useToast } from '@/components/Toast';
 
 interface DeleteCarrierButtonProps {
   carrierId: string;
@@ -14,6 +15,7 @@ export function DeleteCarrierButton({ carrierId, carrierName }: DeleteCarrierBut
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   async function handleDelete() {
     setLoading(true);
@@ -28,10 +30,13 @@ export function DeleteCarrierButton({ carrierId, carrierName }: DeleteCarrierBut
         throw new Error('Failed to delete carrier');
       }
 
+      toast({ message: `${carrierName} has been deleted`, type: 'success' });
       router.push('/carriers');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      const msg = err instanceof Error ? err.message : 'Something went wrong';
+      setError(msg);
+      toast({ message: msg, type: 'error' });
       setLoading(false);
     }
   }

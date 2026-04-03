@@ -12,13 +12,19 @@ import Link from 'next/link';
 import { ArrowLeft, Globe, MapPin, Truck, Star, ClipboardList } from 'lucide-react';
 import { StatusBadge } from '@/components/StatusBadge';
 import { ScoreRing } from '@/components/ScoreRing';
-import { ContactCard } from '@/components/ContactCard';
+
 import { formatDate, formatCurrency } from '@/lib/utils';
 import { CarrierDetailTabs } from './CarrierDetailTabs';
 import { LogPerformanceButton } from './LogPerformanceButton';
 import { Pagination } from '@/components/Pagination';
 import { DeleteCarrierButton } from './DeleteCarrierButton';
 import { Pencil } from 'lucide-react';
+import { AddContactButton } from './AddContactButton';
+import { EditableContactCard } from './EditableContactCard';
+import { AddInsuranceButton } from './AddInsuranceButton';
+import { InsuranceActions } from './InsuranceActions';
+import { AddRateButton } from './AddRateButton';
+import { RateActions } from './RateActions';
 
 const equipLabels: Record<string, string> = {
   dry_van: 'Dry Van',
@@ -290,14 +296,22 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
         {/* ── CONTACTS ── */}
         {tab === 'contacts' && (
           <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-[#8B95A5] uppercase tracking-wide">Contacts</h2>
+              <AddContactButton carrierId={carrier.id} />
+            </div>
             {contacts.length === 0 ? (
-              <EmptyState message="No contacts on file for this carrier." />
+              <div className="flex flex-col items-center justify-center py-16 text-center px-8">
+                <Star className="h-8 w-8 text-[#1A2235] mb-3" />
+                <p className="text-sm text-[#8B95A5] mb-4">No contacts yet — Add one</p>
+                <AddContactButton carrierId={carrier.id} />
+              </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {contacts
                   .sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0))
                   .map((contact) => (
-                    <ContactCard key={contact.id} contact={contact} />
+                    <EditableContactCard key={contact.id} contact={contact} carrierId={carrier.id} />
                   ))}
               </div>
             )}
@@ -306,112 +320,138 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
 
         {/* ── INSURANCE ── */}
         {tab === 'insurance' && (
-          <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-x-auto">
-            {insurance.length === 0 ? (
-              <EmptyState message="No insurance certificates on file." />
-            ) : (
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#1A2235]">
-                    {['Type', 'Provider', 'Policy #', 'Coverage', 'Effective', 'Expiry', 'Status'].map((col) => (
-                      <th
-                        key={col}
-                        className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3"
-                      >
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1A2235]">
-                  {insurance.map((ins) => {
-                    const now = new Date();
-                    const expiry = new Date(ins.expiryDate);
-                    const daysLeft = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-                    const computedStatus =
-                      expiry < now ? 'expired' : daysLeft <= 30 ? 'expiring_soon' : 'active';
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-[#8B95A5] uppercase tracking-wide">Insurance</h2>
+              <AddInsuranceButton carrierId={carrier.id} />
+            </div>
+            <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-x-auto">
+              {insurance.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-center px-8">
+                  <Star className="h-8 w-8 text-[#1A2235] mb-3" />
+                  <p className="text-sm text-[#8B95A5] mb-4">No insurance yet — Add one</p>
+                  <AddInsuranceButton carrierId={carrier.id} />
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#1A2235]">
+                      {['Type', 'Provider', 'Policy #', 'Coverage', 'Effective', 'Expiry', 'Status', 'Actions'].map((col) => (
+                        <th
+                          key={col}
+                          className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3"
+                        >
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1A2235]">
+                    {insurance.map((ins) => {
+                      const now = new Date();
+                      const expiry = new Date(ins.expiryDate);
+                      const daysLeft = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+                      const computedStatus =
+                        expiry < now ? 'expired' : daysLeft <= 30 ? 'expiring_soon' : 'active';
 
-                    return (
-                      <tr key={ins.id} className="hover:bg-[#0C1528] transition-colors">
-                        <td className="px-4 py-3.5 text-sm text-white font-medium">
-                          {insTypeLabels[ins.type] ?? ins.type}
-                        </td>
-                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">{ins.provider ?? '—'}</td>
-                        <td className="px-4 py-3.5 text-sm text-[#8B95A5] font-mono">{ins.policyNumber ?? '—'}</td>
-                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
-                          {ins.coverageAmount != null ? formatCurrency(ins.coverageAmount) : '—'}
-                        </td>
-                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
-                          {ins.effectiveDate ? formatDate(ins.effectiveDate) : '—'}
-                        </td>
-                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">{formatDate(ins.expiryDate)}</td>
-                        <td className="px-4 py-3.5">
-                          <StatusBadge status={computedStatus} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
+                      return (
+                        <tr key={ins.id} className="hover:bg-[#0C1528] transition-colors">
+                          <td className="px-4 py-3.5 text-sm text-white font-medium">
+                            {insTypeLabels[ins.type] ?? ins.type}
+                          </td>
+                          <td className="px-4 py-3.5 text-sm text-[#8B95A5]">{ins.provider ?? '—'}</td>
+                          <td className="px-4 py-3.5 text-sm text-[#8B95A5] font-mono">{ins.policyNumber ?? '—'}</td>
+                          <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
+                            {ins.coverageAmount != null ? formatCurrency(ins.coverageAmount) : '—'}
+                          </td>
+                          <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
+                            {ins.effectiveDate ? formatDate(ins.effectiveDate) : '—'}
+                          </td>
+                          <td className="px-4 py-3.5 text-sm text-[#8B95A5]">{formatDate(ins.expiryDate)}</td>
+                          <td className="px-4 py-3.5">
+                            <StatusBadge status={computedStatus} />
+                          </td>
+                          <td className="px-4 py-3.5">
+                            <InsuranceActions insurance={ins} carrierId={carrier.id} />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         )}
 
         {/* ── RATES ── */}
         {tab === 'rates' && (
-          <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-x-auto">
-            {rates.length === 0 ? (
-              <EmptyState message="No rates on file for this carrier." />
-            ) : (
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#1A2235]">
-                    {['Origin', 'Destination', 'Equipment', 'Rate', 'Type', 'Effective', 'Expires', 'Notes'].map((col) => (
-                      <th
-                        key={col}
-                        className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3"
-                      >
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1A2235]">
-                  {rates.map((rate) => (
-                    <tr key={rate.id} className="hover:bg-[#0C1528] transition-colors">
-                      <td className="px-4 py-3.5 text-sm text-white">
-                        {rate.originCity && rate.originState
-                          ? `${rate.originCity}, ${rate.originState}`
-                          : rate.originState ?? rate.originZip ?? '—'}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-white">
-                        {rate.destCity && rate.destState
-                          ? `${rate.destCity}, ${rate.destState}`
-                          : rate.destState ?? rate.destZip ?? '—'}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
-                        {rate.equipmentType ? (equipLabels[rate.equipmentType] ?? rate.equipmentType) : '—'}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm font-semibold text-[#00C650]">
-                        {formatCurrency(rate.rateAmount)}
-                      </td>
-                      <td className="px-4 py-3.5 text-xs text-[#8B95A5]">
-                        {rateTypeLabels[rate.rateType] ?? rate.rateType}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
-                        {rate.effectiveDate ? formatDate(rate.effectiveDate) : '—'}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
-                        {rate.expiryDate ? formatDate(rate.expiryDate) : '—'}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-[#8B95A5] max-w-[160px] truncate">
-                        {rate.notes ?? '—'}
-                      </td>
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-[#8B95A5] uppercase tracking-wide">Rates</h2>
+              <AddRateButton carrierId={carrier.id} />
+            </div>
+            <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-x-auto">
+              {rates.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-center px-8">
+                  <Star className="h-8 w-8 text-[#1A2235] mb-3" />
+                  <p className="text-sm text-[#8B95A5] mb-4">No rates yet — Add one</p>
+                  <AddRateButton carrierId={carrier.id} />
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#1A2235]">
+                      {['Origin', 'Destination', 'Equipment', 'Rate', 'Type', 'Effective', 'Expires', 'Notes', 'Actions'].map((col) => (
+                        <th
+                          key={col}
+                          className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3"
+                        >
+                          {col}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody className="divide-y divide-[#1A2235]">
+                    {rates.map((rate) => (
+                      <tr key={rate.id} className="hover:bg-[#0C1528] transition-colors">
+                        <td className="px-4 py-3.5 text-sm text-white">
+                          {rate.originCity && rate.originState
+                            ? `${rate.originCity}, ${rate.originState}`
+                            : rate.originState ?? rate.originZip ?? '—'}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-white">
+                          {rate.destCity && rate.destState
+                            ? `${rate.destCity}, ${rate.destState}`
+                            : rate.destState ?? rate.destZip ?? '—'}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
+                          {rate.equipmentType ? (equipLabels[rate.equipmentType] ?? rate.equipmentType) : '—'}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm font-semibold text-[#00C650]">
+                          {formatCurrency(rate.rateAmount)}
+                        </td>
+                        <td className="px-4 py-3.5 text-xs text-[#8B95A5]">
+                          {rateTypeLabels[rate.rateType] ?? rate.rateType}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
+                          {rate.effectiveDate ? formatDate(rate.effectiveDate) : '—'}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-[#8B95A5]">
+                          {rate.expiryDate ? formatDate(rate.expiryDate) : '—'}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-[#8B95A5] max-w-[160px] truncate">
+                          {rate.notes ?? '—'}
+                        </td>
+                        <td className="px-4 py-3.5">
+                          <RateActions rate={rate} carrierId={carrier.id} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         )}
 

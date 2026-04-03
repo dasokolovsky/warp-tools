@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/Toast';
 
 const EQUIPMENT_OPTIONS = [
   { value: 'dry_van', label: 'Dry Van' },
@@ -47,6 +48,7 @@ const inputClass =
 
 export function NewCarrierForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState<FormData>({
@@ -104,14 +106,18 @@ export function NewCarrierForm() {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error?.formErrors?.[0] ?? 'Failed to create carrier');
+        const msg = data.error?.formErrors?.[0] ?? 'Failed to create carrier';
+        setError(msg);
+        toast({ message: msg, type: 'error' });
         return;
       }
 
       const carrier = await res.json();
+      toast({ message: 'Carrier created successfully', type: 'success' });
       router.push(`/carriers/${carrier.id}`);
     } catch {
       setError('An unexpected error occurred');
+      toast({ message: 'An unexpected error occurred', type: 'error' });
     } finally {
       setLoading(false);
     }

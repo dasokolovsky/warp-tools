@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/Toast';
 
 const EQUIPMENT_OPTIONS = [
   { value: 'dry_van', label: 'Dry Van' },
@@ -52,6 +53,7 @@ interface EditCarrierFormProps {
 
 export function EditCarrierForm({ carrierId, initialData }: EditCarrierFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState<FormData>(initialData);
@@ -94,14 +96,18 @@ export function EditCarrierForm({ carrierId, initialData }: EditCarrierFormProps
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error?.formErrors?.[0] ?? 'Failed to update carrier');
+        const msg = data.error?.formErrors?.[0] ?? 'Failed to update carrier';
+        setError(msg);
+        toast({ message: msg, type: 'error' });
         return;
       }
 
+      toast({ message: 'Carrier updated successfully', type: 'success' });
       router.push(`/carriers/${carrierId}`);
       router.refresh();
     } catch {
       setError('An unexpected error occurred');
+      toast({ message: 'An unexpected error occurred', type: 'error' });
     } finally {
       setLoading(false);
     }

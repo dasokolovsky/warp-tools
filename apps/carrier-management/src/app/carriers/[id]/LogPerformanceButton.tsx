@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Plus, X, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/Toast';
 
 interface LogPerformanceButtonProps {
   carrierId: string;
@@ -13,6 +14,7 @@ export function LogPerformanceButton({ carrierId }: LogPerformanceButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,10 +42,13 @@ export function LogPerformanceButton({ carrierId }: LogPerformanceButtonProps) {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Failed to log performance');
+      toast({ message: 'Shipment performance logged', type: 'success' });
       setOpen(false);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      const msg = err instanceof Error ? err.message : 'Something went wrong';
+      setError(msg);
+      toast({ message: msg, type: 'error' });
     } finally {
       setLoading(false);
     }
