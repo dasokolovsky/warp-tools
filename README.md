@@ -32,7 +32,7 @@ Every system works standalone with a local SQLite database. No cloud accounts, n
 |--------|-----------------|--------|
 | [**Carrier Management**](apps/carrier-management/) | Carrier spreadsheets, expired insurance surprises, guessed performance | ✅ Available |
 | [**Invoice & Payment Tracker**](apps/invoice-tracker/) | Excel aging reports, manual follow-up, lost invoices | ✅ Available |
-| **Document Vault** | Email attachments, shared drives, "where's the POD?" | 📋 Planned |
+| [**Document Vault**](apps/document-vault/) | Email attachments, shared drives, "where's the POD?" | ✅ Available |
 | **Load Board / Dispatch** | Email chains, WhatsApp groups, phone calls | 📋 Planned |
 | **Dock / Appointment Scheduler** | Phone calls, paper sign-in sheets | 📋 Planned |
 | **Driver & Settlement** | Excel pay calculations, disputes | 📋 Planned |
@@ -61,6 +61,12 @@ cd apps/invoice-tracker
 npm run db:migrate
 npm run db:seed
 npm run dev        # → http://localhost:3003
+
+# Or run document vault
+cd apps/document-vault
+npm run db:migrate
+npm run db:seed
+npm run dev        # → http://localhost:3004
 ```
 
 ### Option 2: Docker
@@ -70,6 +76,7 @@ git clone https://github.com/dasokolovsky/warp-tools.git
 cd warp-tools
 docker compose up carrier-management  # → http://localhost:3001
 docker compose up invoice-tracker      # → http://localhost:3003
+docker compose up document-vault        # → http://localhost:3004
 ```
 
 ## Screenshots
@@ -88,7 +95,8 @@ docker compose up invoice-tracker      # → http://localhost:3003
 warp-tools/
 ├── apps/
 │   ├── carrier-management/    # Carrier relationship management
-│   └── invoice-tracker/       # Invoice & payment tracking
+│   ├── invoice-tracker/       # Invoice & payment tracking
+│   └── document-vault/        # Freight document management
 ├── packages/
 │   ├── ui/                    # Shared design system (colors, tokens)
 │   ├── config/                # Shared Tailwind + TypeScript config

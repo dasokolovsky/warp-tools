@@ -31,8 +31,25 @@ services:
       - NODE_ENV=production
     restart: unless-stopped
 
+  document-vault:
+    build:
+      context: .
+      dockerfile: apps/document-vault/Dockerfile
+    ports:
+      - "3004:3004"
+    volumes:
+      - docvault-data:/app/data
+      - docvault-uploads:/app/uploads
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
 volumes:
   carrier-data:
     driver: local
   invoice-data:
+    driver: local
+  docvault-data:
+    driver: local
+  docvault-uploads:
     driver: local
