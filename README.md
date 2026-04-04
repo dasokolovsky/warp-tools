@@ -35,7 +35,7 @@ Every system works standalone with a local SQLite database. No cloud accounts, n
 | [**Document Vault**](apps/document-vault/) | Email attachments, shared drives, "where's the POD?" | ✅ Available |
 | [**Load Board / Dispatch**](apps/load-dispatch/) | Email chains, WhatsApp groups, phone calls | ✅ Available |
 | [**Dock / Appointment Scheduler**](apps/dock-scheduler/) | Phone calls, paper sign-in sheets | ✅ Available |
-| **Driver & Settlement** | Excel pay calculations, disputes | 📋 Planned |
+| [**Driver & Settlement**](apps/driver-settlements/) | Excel pay calculations, disputes | ✅ Available |
 | **Rate Management** | Emailed rate sheets, manual comparisons | 📋 Planned |
 | **Mini TMS** | All of the above glued together | 📋 Planned |
 
@@ -112,7 +112,8 @@ warp-tools/
 │   ├── invoice-tracker/       # Invoice & payment tracking
 │   ├── document-vault/        # Freight document management
 │   ├── load-dispatch/         # Load board & dispatch
-│   └── dock-scheduler/        # Dock door appointment scheduling
+│   ├── dock-scheduler/        # Dock door appointment scheduling
+│   └── driver-settlements/    # Driver pay & settlement management
 ├── packages/
 │   ├── ui/                    # Shared design system (colors, tokens)
 │   ├── config/                # Shared Tailwind + TypeScript config
