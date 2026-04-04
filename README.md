@@ -41,6 +41,21 @@ Every system works standalone with a local SQLite database. No cloud accounts, n
 
 Each system works standalone. Together they're a platform — systems share carriers, rates, documents, and invoices across a unified schema.
 
+### Micro-Tools
+
+Single-page calculators and generators — no database, no login, just open and use.
+
+| Tool | What It Does |
+|------|-------------|
+| [**IFTA Calculator**](apps/ifta-calculator/) | Fuel tax reporting across jurisdictions |
+| [**Detention Calculator**](apps/detention-calculator/) | Detention/demurrage charge tracking |
+| [**Margin Calculator**](apps/margin-calculator/) | Load margin & profitability analysis |
+| [**Deadhead Calculator**](apps/deadhead-calculator/) | Empty mile cost estimation |
+| [**Rate Con Generator**](apps/rate-con-generator/) | Rate confirmation PDF generation |
+| [**Load Profitability**](apps/load-profitability/) | Per-load P&L breakdown |
+| [**Settlement Calculator**](apps/settlement-calculator/) | Driver settlement computation |
+| [**Freight Parser**](apps/freight-parser/) | Parse freight emails/documents into structured data |
+
 ## Quick Start
 
 ### Option 1: npm
@@ -86,11 +101,18 @@ npm run dev        # → http://localhost:3006
 ```bash
 git clone https://github.com/dasokolovsky/warp-tools.git
 cd warp-tools
-docker compose up carrier-management  # → http://localhost:3001
-docker compose up invoice-tracker      # → http://localhost:3003
+docker compose up carrier-management    # → http://localhost:3001
+docker compose up invoice-tracker       # → http://localhost:3003
 docker compose up document-vault        # → http://localhost:3004
-docker compose up load-dispatch          # → http://localhost:3005
-docker compose up dock-scheduler          # → http://localhost:3006
+docker compose up load-dispatch         # → http://localhost:3005
+docker compose up dock-scheduler        # → http://localhost:3006
+docker compose up driver-settlements    # → http://localhost:3007
+docker compose up rate-management       # → http://localhost:3008
+docker compose up shipment-management   # → http://localhost:3009
+# Calculators (no database required)
+docker compose up ifta-calculator       # → http://localhost:3010
+docker compose up margin-calculator     # → http://localhost:3012
+docker compose up freight-parser        # → http://localhost:3017
 ```
 
 ## Screenshots
@@ -115,7 +137,15 @@ warp-tools/
 │   ├── dock-scheduler/        # Dock door appointment scheduling
 │   ├── driver-settlements/    # Driver pay & settlement management
 │   ├── rate-management/       # Lane rates, carrier pricing, RFQs
-│   └── shipment-management/   # Mini TMS — unified shipment lifecycle
+│   ├── shipment-management/   # Mini TMS — unified shipment lifecycle
+│   ├── ifta-calculator/       # IFTA fuel tax calculator
+│   ├── detention-calculator/  # Detention & demurrage charges
+│   ├── margin-calculator/     # Load margin analysis
+│   ├── deadhead-calculator/   # Empty mile cost estimation
+│   ├── rate-con-generator/    # Rate confirmation PDF generator
+│   ├── load-profitability/    # Per-load P&L breakdown
+│   ├── settlement-calculator/ # Driver settlement computation
+│   └── freight-parser/        # Parse freight docs to structured data
 ├── packages/
 │   ├── ui/                    # Shared design system (colors, tokens)
 │   ├── config/                # Shared Tailwind + TypeScript config

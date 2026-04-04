@@ -68,6 +68,122 @@ services:
       - NODE_ENV=production
     restart: unless-stopped
 
+  driver-settlements:
+    build:
+      context: .
+      dockerfile: apps/driver-settlements/Dockerfile
+    ports:
+      - "3007:3007"
+    volumes:
+      - settlements-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  rate-management:
+    build:
+      context: .
+      dockerfile: apps/rate-management/Dockerfile
+    ports:
+      - "3008:3008"
+    volumes:
+      - rate-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  shipment-management:
+    build:
+      context: .
+      dockerfile: apps/shipment-management/Dockerfile
+    ports:
+      - "3009:3009"
+    volumes:
+      - shipment-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  ifta-calculator:
+    build:
+      context: .
+      dockerfile: apps/ifta-calculator/Dockerfile
+    ports:
+      - "3010:3010"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  detention-calculator:
+    build:
+      context: .
+      dockerfile: apps/detention-calculator/Dockerfile
+    ports:
+      - "3011:3011"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  margin-calculator:
+    build:
+      context: .
+      dockerfile: apps/margin-calculator/Dockerfile
+    ports:
+      - "3012:3012"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  deadhead-calculator:
+    build:
+      context: .
+      dockerfile: apps/deadhead-calculator/Dockerfile
+    ports:
+      - "3013:3013"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  rate-con-generator:
+    build:
+      context: .
+      dockerfile: apps/rate-con-generator/Dockerfile
+    ports:
+      - "3014:3014"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  load-profitability:
+    build:
+      context: .
+      dockerfile: apps/load-profitability/Dockerfile
+    ports:
+      - "3015:3015"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  settlement-calculator:
+    build:
+      context: .
+      dockerfile: apps/settlement-calculator/Dockerfile
+    ports:
+      - "3016:3016"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  freight-parser:
+    build:
+      context: .
+      dockerfile: apps/freight-parser/Dockerfile
+    ports:
+      - "3017:3017"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
 volumes:
   carrier-data:
     driver: local
@@ -80,4 +196,10 @@ volumes:
   dispatch-data:
     driver: local
   dock-data:
+    driver: local
+  settlements-data:
+    driver: local
+  rate-data:
+    driver: local
+  shipment-data:
     driver: local
