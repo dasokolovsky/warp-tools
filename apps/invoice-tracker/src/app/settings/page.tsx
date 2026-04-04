@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Save, Check, Building2, FileText, CreditCard, DollarSign, Info } from 'lucide-react';
 
 const STORAGE_KEY = 'warp-invoice-settings';
@@ -22,19 +22,17 @@ const defaultSettings = {
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
-  const [settings, setSettings] = useState(defaultSettings);
-
-  useEffect(() => {
+  const [settings, setSettings] = useState<typeof defaultSettings>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         try {
-          const parsed = JSON.parse(stored);
-          setSettings((s) => ({ ...s, ...parsed }));
+          return { ...defaultSettings, ...JSON.parse(stored) };
         } catch {}
       }
     }
-  }, []);
+    return defaultSettings;
+  });
 
   function set(key: string, value: string) {
     setSettings((s) => ({ ...s, [key]: value }));

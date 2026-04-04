@@ -83,18 +83,27 @@ export function InvoiceForm({ mode, invoiceId, initialData }: InvoiceFormProps) 
   const [dueDateManual, setDueDateManual] = useState(!!initialData?.dueDate);
 
   useEffect(() => {
+    let cancelled = false;
     fetch('/api/customers')
       .then((r) => r.json())
       .then((data: Customer[]) => {
+        if (cancelled) return;
         setCustomers(data);
-        // If editing, find terms for pre-selected customer
-        if (initialData?.customerId) {
-          const c = data.find((x) => x.id === initialData.customerId);
-          if (c) setForm((f) => ({ ...f, paymentTerms: c.paymentTerms }));
-        }
       })
-      .finally(() => setLoadingCustomers(false));
+      .finally(() => {
+        if (!cancelled) setLoadingCustomers(false);
+      });
+    return () => { cancelled = true; };
   }, []);
+
+  // When customers load, apply pre-selected customer's payment terms (edit mode)
+  useEffect(() => {
+    if (initialData?.customerId && customers.length > 0) {
+      const c = customers.find((x) => x.id === initialData.customerId);
+      if (c) setForm((f) => ({ ...f, paymentTerms: c.paymentTerms }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customers.length]);
 
   function set(key: keyof typeof form, value: string) {
     setForm((f) => ({ ...f, [key]: value }));

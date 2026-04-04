@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Plus, Trash2, Check, X } from 'lucide-react';
 import { LineTypeBadge } from '@/components/LineTypeBadge';
 import { cn } from '@/lib/utils';
@@ -85,76 +85,78 @@ export function LineItemEditor({ lineItems, onChange, readOnly }: LineItemEditor
     setDraft((d) => ({ ...d, [key]: value }));
   }
 
-  const InlineForm = ({ onSave, onCancel }: { onSave: () => void; onCancel: () => void }) => (
-    <tr className="bg-[#0C1528]">
-      <td className="px-4 py-2.5">
-        <input
-          autoFocus
-          type="text"
-          value={draft.description}
-          onChange={(e) => setDraftField('description', e.target.value)}
-          placeholder="Description"
-          className={inputClass}
-          onKeyDown={(e) => { if (e.key === 'Enter') onSave(); if (e.key === 'Escape') onCancel(); }}
-        />
-      </td>
-      <td className="px-4 py-2.5 w-36">
-        <select
-          value={draft.lineType}
-          onChange={(e) => setDraftField('lineType', e.target.value as LineItemRow['lineType'])}
-          className={inputClass}
-        >
-          {LINE_TYPES.map((lt) => (
-            <option key={lt.value} value={lt.value}>{lt.label}</option>
-          ))}
-        </select>
-      </td>
-      <td className="px-4 py-2.5 w-24">
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          value={draft.quantity}
-          onChange={(e) => setDraftField('quantity', parseFloat(e.target.value) || 0)}
-          className={cn(inputClass, 'text-right')}
-        />
-      </td>
-      <td className="px-4 py-2.5 w-32">
-        <div className="relative">
-          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[#8B95A5] text-xs">$</span>
+  function renderInlineForm(onSave: () => void, onCancel: () => void) {
+    return (
+      <tr className="bg-[#0C1528]">
+        <td className="px-4 py-2.5">
+          <input
+            autoFocus
+            type="text"
+            value={draft.description}
+            onChange={(e) => setDraftField('description', e.target.value)}
+            placeholder="Description"
+            className={inputClass}
+            onKeyDown={(e) => { if (e.key === 'Enter') onSave(); if (e.key === 'Escape') onCancel(); }}
+          />
+        </td>
+        <td className="px-4 py-2.5 w-36">
+          <select
+            value={draft.lineType}
+            onChange={(e) => setDraftField('lineType', e.target.value as LineItemRow['lineType'])}
+            className={inputClass}
+          >
+            {LINE_TYPES.map((lt) => (
+              <option key={lt.value} value={lt.value}>{lt.label}</option>
+            ))}
+          </select>
+        </td>
+        <td className="px-4 py-2.5 w-24">
           <input
             type="number"
             step="0.01"
             min="0"
-            value={draft.unitPrice}
-            onChange={(e) => setDraftField('unitPrice', parseFloat(e.target.value) || 0)}
-            className={cn(inputClass, 'pl-5 text-right')}
+            value={draft.quantity}
+            onChange={(e) => setDraftField('quantity', parseFloat(e.target.value) || 0)}
+            className={cn(inputClass, 'text-right')}
           />
-        </div>
-      </td>
-      <td className="px-4 py-2.5 text-right text-sm text-white w-28">
-        ${(draft.quantity * draft.unitPrice).toFixed(2)}
-      </td>
-      <td className="px-4 py-2.5 w-16">
-        <div className="flex gap-1">
-          <button
-            type="button"
-            onClick={onSave}
-            className="p-1.5 rounded-lg bg-[#00C650]/20 text-[#00C650] hover:bg-[#00C650]/30 transition-colors"
-          >
-            <Check className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="p-1.5 rounded-lg bg-[#8B95A5]/10 text-[#8B95A5] hover:bg-[#8B95A5]/20 transition-colors"
-          >
-            <X className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </td>
-    </tr>
-  );
+        </td>
+        <td className="px-4 py-2.5 w-32">
+          <div className="relative">
+            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[#8B95A5] text-xs">$</span>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              value={draft.unitPrice}
+              onChange={(e) => setDraftField('unitPrice', parseFloat(e.target.value) || 0)}
+              className={cn(inputClass, 'pl-5 text-right')}
+            />
+          </div>
+        </td>
+        <td className="px-4 py-2.5 text-right text-sm text-white w-28">
+          ${(draft.quantity * draft.unitPrice).toFixed(2)}
+        </td>
+        <td className="px-4 py-2.5 w-16">
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={onSave}
+              className="p-1.5 rounded-lg bg-[#00C650]/20 text-[#00C650] hover:bg-[#00C650]/30 transition-colors"
+            >
+              <Check className="h-3.5 w-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="p-1.5 rounded-lg bg-[#8B95A5]/10 text-[#8B95A5] hover:bg-[#8B95A5]/20 transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <div>
@@ -180,7 +182,7 @@ export function LineItemEditor({ lineItems, onChange, readOnly }: LineItemEditor
             )}
             {lineItems.map((item, idx) =>
               editingIdx === idx ? (
-                <InlineForm key={idx} onSave={() => saveEdit(idx)} onCancel={cancelEdit} />
+                <React.Fragment key={idx}>{renderInlineForm(() => saveEdit(idx), cancelEdit)}</React.Fragment>
               ) : (
                 <tr key={idx} className="hover:bg-[#0C1528]/50 transition-colors group">
                   <td className="px-4 py-3 text-sm text-white">{item.description}</td>
@@ -217,9 +219,7 @@ export function LineItemEditor({ lineItems, onChange, readOnly }: LineItemEditor
                 </tr>
               )
             )}
-            {addingNew && (
-              <InlineForm onSave={saveNew} onCancel={cancelEdit} />
-            )}
+            {addingNew && renderInlineForm(saveNew, cancelEdit)}
           </tbody>
           {lineItems.length > 0 && (
             <tfoot className="border-t border-[#1A2235]">

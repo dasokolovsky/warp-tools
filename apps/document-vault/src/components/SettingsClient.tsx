@@ -45,13 +45,9 @@ function loadFromStorage(): Record<LoadStatus, DocType[]> {
 }
 
 export function SettingsClient() {
-  const [config, setConfig] = useState<Record<LoadStatus, DocType[]>>(DEFAULTS);
+  const [config, setConfig] = useState<Record<LoadStatus, DocType[]>>(() => loadFromStorage());
   const [saved, setSaved] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    setConfig(loadFromStorage());
-  }, []);
 
   const toggle = (status: LoadStatus, docType: DocType) => {
     setConfig((prev) => {
