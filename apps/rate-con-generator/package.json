@@ -1,0 +1,34 @@
+{
+  "name": "@warp-tools/rate-con-generator",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Rate Confirmation Generator — free, open-source rate con document builder for freight brokers",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev --port 3014",
+    "build": "next build",
+    "start": "next start --port 3014",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@warp-tools/config": "*",
+    "@warp-tools/ui": "*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "next": "^16.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10",
+    "eslint": "^9",
+    "eslint-config-next": "^16.2.2",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5"
+  }
+}
