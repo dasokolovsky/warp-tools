@@ -1,0 +1,93 @@
+CREATE TABLE `check_calls` (
+	`id` text PRIMARY KEY NOT NULL,
+	`shipment_id` text NOT NULL,
+	`status` text NOT NULL,
+	`location_city` text,
+	`location_state` text,
+	`eta` text,
+	`notes` text,
+	`contact_method` text DEFAULT 'phone',
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
+	FOREIGN KEY (`shipment_id`) REFERENCES `shipments`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `shipment_documents` (
+	`id` text PRIMARY KEY NOT NULL,
+	`shipment_id` text NOT NULL,
+	`doc_type` text NOT NULL,
+	`filename` text NOT NULL,
+	`doc_ref` text,
+	`uploaded_at` text DEFAULT (datetime('now')) NOT NULL,
+	`notes` text,
+	FOREIGN KEY (`shipment_id`) REFERENCES `shipments`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `shipment_events` (
+	`id` text PRIMARY KEY NOT NULL,
+	`shipment_id` text NOT NULL,
+	`event_type` text NOT NULL,
+	`description` text NOT NULL,
+	`old_value` text,
+	`new_value` text,
+	`created_by` text,
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
+	FOREIGN KEY (`shipment_id`) REFERENCES `shipments`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `shipments` (
+	`id` text PRIMARY KEY NOT NULL,
+	`shipment_number` text NOT NULL,
+	`status` text DEFAULT 'quote' NOT NULL,
+	`customer_id` text,
+	`customer_name` text NOT NULL,
+	`origin_city` text NOT NULL,
+	`origin_state` text NOT NULL,
+	`origin_zip` text,
+	`dest_city` text NOT NULL,
+	`dest_state` text NOT NULL,
+	`dest_zip` text,
+	`equipment_type` text DEFAULT 'dry_van' NOT NULL,
+	`pickup_date` text,
+	`delivery_date` text,
+	`carrier_id` text,
+	`carrier_name` text,
+	`carrier_contact` text,
+	`carrier_phone` text,
+	`customer_rate` real,
+	`carrier_rate` real,
+	`margin` real,
+	`margin_pct` real,
+	`rate_type` text DEFAULT 'flat',
+	`miles` integer,
+	`load_ref` text,
+	`invoice_ref` text,
+	`carrier_payment_ref` text,
+	`has_bol` integer DEFAULT false,
+	`has_pod` integer DEFAULT false,
+	`has_rate_con` integer DEFAULT false,
+	`has_invoice` integer DEFAULT false,
+	`doc_score` integer DEFAULT 0,
+	`pickup_on_time` integer,
+	`delivery_on_time` integer,
+	`health_score` integer DEFAULT 50,
+	`quoted_at` text,
+	`booked_at` text,
+	`dispatched_at` text,
+	`picked_up_at` text,
+	`delivered_at` text,
+	`invoiced_at` text,
+	`paid_at` text,
+	`closed_at` text,
+	`cancelled_at` text,
+	`cancellation_reason` text,
+	`commodity` text,
+	`weight` integer,
+	`special_instructions` text,
+	`notes` text,
+	`tags` text,
+	`created_by` text,
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
+	`updated_at` text DEFAULT (datetime('now')) NOT NULL
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `shipments_shipment_number_unique` ON `shipments` (`shipment_number`);
