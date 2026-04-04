@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+import Link from "next/link";
 
 import { db } from '@/db';
 import { lanes, carrier_rates, customer_tariffs, rfqs } from '@/db/schema';
@@ -179,7 +180,7 @@ export default async function DashboardPage() {
               <Activity className="h-4 w-4 text-[#00C650]" />
               Top Lanes
             </h2>
-            <a href="/lanes" className="text-xs text-[#00C650] hover:underline">View all</a>
+            <Link href="/lanes" className="text-xs text-[#00C650] hover:underline">View all</Link>
           </div>
           <div className="space-y-2">
             {topLanes.length === 0 && <p className="text-sm text-[#8B95A5] py-4 text-center">No lane data yet</p>}
@@ -213,12 +214,12 @@ export default async function DashboardPage() {
               <FileQuestion className="h-4 w-4 text-[#00C650]" />
               Open RFQs
             </h2>
-            <a href="/rfqs" className="text-xs text-[#00C650] hover:underline">View all</a>
+            <Link href="/rfqs" className="text-xs text-[#00C650] hover:underline">View all</Link>
           </div>
           <div className="space-y-2">
             {openRFQList.length === 0 && <p className="text-sm text-[#8B95A5] py-4 text-center">No open RFQs</p>}
             {openRFQList.map(rfq => (
-              <a key={rfq.id} href={`/rfqs/${rfq.id}`} className="flex items-center justify-between py-2 border-b border-[#1A2235] last:border-0 hover:bg-[#0C1528] -mx-2 px-2 rounded transition-colors">
+              <Link key={rfq.id} href={`/rfqs/${rfq.id}`} className="flex items-center justify-between py-2 border-b border-[#1A2235] last:border-0 hover:bg-[#0C1528] -mx-2 px-2 rounded transition-colors">
                 <div>
                   <div className="text-sm font-medium text-white">{rfq.rfq_number}</div>
                   <div className="text-xs text-[#8B95A5] mt-0.5 flex items-center gap-1">
@@ -227,7 +228,7 @@ export default async function DashboardPage() {
                   </div>
                 </div>
                 <RFQStatusBadge status={rfq.status} />
-              </a>
+              </Link>
             ))}
           </div>
         </div>

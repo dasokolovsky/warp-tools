@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Settings, Save, Check } from 'lucide-react';
 
 const RATE_BASIS_OPTIONS = [
@@ -27,22 +27,20 @@ const DEFAULTS: RateSettings = {
 };
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<RateSettings>(() => DEFAULTS);
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
+  const [settings, setSettings] = useState<RateSettings>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('rateSettings');
       if (stored) {
         try {
-          const parsed = JSON.parse(stored);
-          setSettings({ ...DEFAULTS, ...parsed });
+          return { ...DEFAULTS, ...JSON.parse(stored) };
         } catch {
           // ignore
         }
       }
     }
-  }, []);
+    return DEFAULTS;
+  });
+  const [saved, setSaved] = useState(false);
 
   function handleSave() {
     if (typeof window !== 'undefined') {
