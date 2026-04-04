@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { db } from '@/db';
 import { carriers, carrierRates } from '@/db/schema';
 import { eq } from 'drizzle-orm';

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { db } from '@/db';
 import { carriers, carrierInsurance } from '@/db/schema';
 import Link from 'next/link';
