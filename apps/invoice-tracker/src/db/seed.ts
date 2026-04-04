@@ -322,13 +322,13 @@ async function seed() {
       amountPaid: 1800,
       notes: 'Split payment arrangement agreed — balance due by due date.',
     },
-    // Rocky Mountain Beverages — quick pay draft
+    // Rocky Mountain Beverages — sent this month
     {
       id: 'inv13',
       invoiceNumber: 'INV-2026-0076',
       customerId: 'cust8',
       loadRef: 'LD-10076',
-      status: 'draft',
+      status: 'sent',
       invoiceDate: pastDate(2),
       dueDate: futureDate(1),
       subtotal: 2150,
@@ -337,13 +337,13 @@ async function seed() {
       amountPaid: 0,
       notes: 'Draft — awaiting delivery confirmation before sending.',
     },
-    // Draft invoices
+    // Sent this month
     {
       id: 'inv14',
       invoiceNumber: 'INV-2026-0077',
       customerId: 'cust1',
       loadRef: 'LD-10077',
-      status: 'draft',
+      status: 'sent',
       invoiceDate: pastDate(1),
       dueDate: futureDate(29),
       subtotal: 4500,

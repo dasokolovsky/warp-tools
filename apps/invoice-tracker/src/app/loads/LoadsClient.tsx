@@ -211,7 +211,7 @@ export function LoadsClient({
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-hidden">
+      <div className="rounded-2xl bg-[#080F1E] border border-[#1A2235] overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#1A2235]">
