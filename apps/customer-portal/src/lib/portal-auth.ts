@@ -40,7 +40,7 @@ export async function getPortalCustomer(request: Request) {
 export function setPortalCookie(response: Response, token: string): Response {
   response.headers.append(
     'Set-Cookie',
-    `${COOKIE_NAME}=${token}; Path=/portal; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 30}`
+    `${COOKIE_NAME}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 30}`
   );
   return response;
 }
@@ -48,7 +48,7 @@ export function setPortalCookie(response: Response, token: string): Response {
 export function clearPortalCookie(response: Response): Response {
   response.headers.append(
     'Set-Cookie',
-    `${COOKIE_NAME}=; Path=/portal; HttpOnly; SameSite=Lax; Max-Age=0`
+    `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`
   );
   return response;
 }
