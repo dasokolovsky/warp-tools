@@ -48,12 +48,12 @@ npm run lint
 
 ## Finding Something to Work On
 
-1. Check the **[Issues](https://github.com/dasokolovsky/warp-tools/issues)** page for open issues
+1. Check the **[Issues](https://github.com/wearewarp/warp-tools/issues)** page for open issues
 2. Look at each system's README for **"Ideas & Next Steps"** — these are concrete features tagged by difficulty:
    - 🟢 **Easy** — Good first issues, small scope
    - 🟡 **Medium** — Requires understanding of the codebase
    - 🔴 **Hard** — Significant feature work
-3. If you have a new idea, [open an issue](https://github.com/dasokolovsky/warp-tools/issues/new/choose) first to discuss it
+3. If you have a new idea, [open an issue](https://github.com/wearewarp/warp-tools/issues/new/choose) first to discuss it
 
 ## Branch Naming
 
@@ -142,8 +142,8 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for:
 
 ## Questions?
 
-- Open a [Discussion](https://github.com/dasokolovsky/warp-tools/discussions) for general questions
-- Open an [Issue](https://github.com/dasokolovsky/warp-tools/issues) for bugs or feature requests
+- Open a [Discussion](https://github.com/wearewarp/warp-tools/discussions) for general questions
+- Open an [Issue](https://github.com/wearewarp/warp-tools/issues) for bugs or feature requests
 - Tag your PR with `help wanted` if you need guidance
 
 ---

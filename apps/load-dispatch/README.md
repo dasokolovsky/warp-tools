@@ -30,7 +30,7 @@
 
 ## Quick Start
 ```bash
-git clone https://github.com/dasokolovsky/warp-tools
+git clone https://github.com/wearewarp/warp-tools
 cd warp-tools/apps/load-dispatch
 npm install
 npm run db:migrate && npm run db:seed

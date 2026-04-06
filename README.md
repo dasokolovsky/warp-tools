@@ -3,7 +3,7 @@
   <p align="center">
     Free, open-source logistics systems that replace your spreadsheets.
     <br />
-    <a href="https://github.com/dasokolovsky/warp-tools/issues">Issues</a>
+    <a href="https://github.com/wearewarp/warp-tools/issues">Issues</a>
     ·
     <a href="#systems">Systems</a>
     ·
@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/dasokolovsky/warp-tools/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-  <a href="https://github.com/dasokolovsky/warp-tools"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+  <a href="https://github.com/wearewarp/warp-tools/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href="https://github.com/wearewarp/warp-tools"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
 </p>
 
 ---
@@ -62,7 +62,7 @@ Single-page calculators and generators — no database, no login, just open and 
 ### Option 1: npm (any system)
 
 ```bash
-git clone https://github.com/dasokolovsky/warp-tools.git
+git clone https://github.com/wearewarp/warp-tools.git
 cd warp-tools
 npm install
 
@@ -100,7 +100,7 @@ npm run dev                  # start dev server
 ### Option 2: Docker
 
 ```bash
-git clone https://github.com/dasokolovsky/warp-tools.git
+git clone https://github.com/wearewarp/warp-tools.git
 cd warp-tools
 
 # Run any system

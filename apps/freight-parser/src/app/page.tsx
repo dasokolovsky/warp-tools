@@ -132,7 +132,7 @@ export default function FreightParserPage() {
             </span>
           </div>
           <a
-            href="https://github.com/dasokolovsky/warp-tools"
+            href="https://github.com/wearewarp/warp-tools"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-[#8B95A5] hover:text-slate-200 transition-colors"

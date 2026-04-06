@@ -16,7 +16,7 @@ export default function NavBar() {
           </div>
         </div>
         <a
-          href="https://github.com/dasokolovsky/warp-tools"
+          href="https://github.com/wearewarp/warp-tools"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-warp-muted hover:text-white transition-colors text-sm"

@@ -63,4 +63,4 @@ Official rates: [IFTA Inc.](https://www.iftach.org)
 
 ## License
 
-MIT — Part of [Warp Tools](https://github.com/dasokolovsky/warp-tools)
+MIT — Part of [Warp Tools](https://github.com/wearewarp/warp-tools)

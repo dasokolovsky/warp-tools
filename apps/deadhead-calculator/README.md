@@ -90,4 +90,4 @@ docker run -p 3013:3013 deadhead-calculator
 
 MIT — free to use, fork, and self-host.
 
-Built by [Warp](https://wearewarp.com) as part of the [Warp Tools](https://github.com/dasokolovsky/warp-tools) open-source logistics suite.
+Built by [Warp](https://wearewarp.com) as part of the [Warp Tools](https://github.com/wearewarp/warp-tools) open-source logistics suite.

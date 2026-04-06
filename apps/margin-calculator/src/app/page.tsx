@@ -382,7 +382,7 @@ export default function MarginCalculatorPage() {
             </span>
           </div>
           <a
-            href="https://github.com/dasokolovsky/warp-tools"
+            href="https://github.com/wearewarp/warp-tools"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-warp-muted hover:text-white transition-colors"
@@ -479,12 +479,12 @@ export default function MarginCalculatorPage() {
             </a>
             {' '}· Free, open-source logistics tools ·{' '}
             <a
-              href="https://github.com/dasokolovsky/warp-tools"
+              href="https://github.com/wearewarp/warp-tools"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition-colors"
             >
-              github.com/dasokolovsky/warp-tools
+              github.com/wearewarp/warp-tools
             </a>
           </p>
         </footer>

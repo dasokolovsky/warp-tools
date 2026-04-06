@@ -403,7 +403,7 @@ export default function SettlementCalculatorPage() {
             Warp
           </a>{' '}
           &mdash; free, open-source logistics tools.{' '}
-          <a href="https://github.com/dasokolovsky/warp-tools" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/wearewarp/warp-tools" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
         </p>

@@ -114,7 +114,7 @@ export default function IFTAPage() {
           </div>
         </div>
         <a
-          href="https://github.com/dasokolovsky/warp-tools"
+          href="https://github.com/wearewarp/warp-tools"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-warp-muted hover:text-white text-sm transition-colors"
@@ -278,7 +278,7 @@ export default function IFTAPage() {
       <footer className="no-print border-t border-warp-border py-5 px-6 text-center text-sm text-warp-muted">
         Part of{' '}
         <a
-          href="https://github.com/dasokolovsky/warp-tools"
+          href="https://github.com/wearewarp/warp-tools"
           target="_blank"
           rel="noopener noreferrer"
           className="text-warp-accent hover:underline"

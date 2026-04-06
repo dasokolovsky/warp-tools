@@ -155,8 +155,8 @@ export default function SettingsPage() {
         <div className="bg-[#080F1E] border border-[#1A2235] rounded-xl p-4 flex-1 mr-4">
           <h2 className="text-sm font-semibold text-white mb-1">About</h2>
           <p className="text-xs text-[#8B95A5]">Rate Management v0.1.0 — Part of the <span className="text-[#00C650]">Warp Tools</span> open-source logistics platform.</p>
-          <a href="https://github.com/dasokolovsky/warp-tools" className="text-xs text-[#00C650] hover:underline mt-1 inline-block" target="_blank" rel="noopener noreferrer">
-            github.com/dasokolovsky/warp-tools
+          <a href="https://github.com/wearewarp/warp-tools" className="text-xs text-[#00C650] hover:underline mt-1 inline-block" target="_blank" rel="noopener noreferrer">
+            github.com/wearewarp/warp-tools
           </a>
         </div>
         <button

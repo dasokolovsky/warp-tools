@@ -28,7 +28,7 @@
 ## Quick Start
 
 ```bash
-git clone https://github.com/dasokolovsky/warp-tools
+git clone https://github.com/wearewarp/warp-tools
 cd warp-tools/apps/invoice-tracker
 npm install
 npm run db:migrate && npm run db:seed
@@ -177,4 +177,4 @@ MIT — free to use, modify, and deploy.
 
 ---
 
-Built with ❤️ by [Warp](https://wearewarp.com) · [warp-tools on GitHub](https://github.com/dasokolovsky/warp-tools)
+Built with ❤️ by [Warp](https://wearewarp.com) · [warp-tools on GitHub](https://github.com/wearewarp/warp-tools)

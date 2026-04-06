@@ -166,7 +166,7 @@ export default function SettingsPage() {
             </div>
             <div className="pt-3 border-t border-[#1A2235]">
               <a
-                href="https://github.com/dasokolovsky/warp-tools"
+                href="https://github.com/wearewarp/warp-tools"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-[#00C650] hover:underline"

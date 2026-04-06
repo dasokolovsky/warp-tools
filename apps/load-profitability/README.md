@@ -1,6 +1,6 @@
 # Load Profitability Calculator
 
-> **Part of [Warp Tools](https://github.com/dasokolovsky/warp-tools)** — free, open-source logistics software.
+> **Part of [Warp Tools](https://github.com/wearewarp/warp-tools)** — free, open-source logistics software.
 
 True cost-per-load analysis for trucking companies and owner-operators. Goes beyond simple margin — factors in **all** costs: fuel, driver pay, tolls, maintenance per mile, insurance per mile, truck payment per mile, deadhead, and overhead allocation.
 

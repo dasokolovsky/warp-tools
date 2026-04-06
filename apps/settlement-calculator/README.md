@@ -40,7 +40,7 @@ docker run -p 3016:3016 settlement-calculator
 
 ## Part of Warp Tools
 
-This is one of many free logistics tools in the [Warp Tools](https://github.com/dasokolovsky/warp-tools) monorepo. Built by [Warp](https://wearewarp.com).
+This is one of many free logistics tools in the [Warp Tools](https://github.com/wearewarp/warp-tools) monorepo. Built by [Warp](https://wearewarp.com).
 
 ## Ideas / Roadmap
 

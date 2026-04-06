@@ -2,7 +2,7 @@
 
 Free, open-source detention and demurrage fee calculator for truckers and freight brokers. Calculate waiting time fees and container holding charges instantly — no account, no sign-up.
 
-Part of [Warp Tools](https://github.com/dasokolovsky/warp-tools).
+Part of [Warp Tools](https://github.com/wearewarp/warp-tools).
 
 ---
 

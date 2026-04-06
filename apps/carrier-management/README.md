@@ -36,7 +36,7 @@
 
 ```bash
 # From the monorepo root
-git clone https://github.com/dasokolovsky/warp-tools.git
+git clone https://github.com/wearewarp/warp-tools.git
 cd warp-tools
 npm install
 
@@ -158,7 +158,7 @@ This system is designed to run completely standalone with zero external dependen
 
 ```bash
 # Clone and set up
-git clone https://github.com/dasokolovsky/warp-tools.git
+git clone https://github.com/wearewarp/warp-tools.git
 cd warp-tools
 npm install
 
@@ -246,4 +246,4 @@ MIT — do whatever you want with it.
 
 ---
 
-**Part of [Warp Tools](https://github.com/dasokolovsky/warp-tools)** — Free, open-source logistics systems built by [Warp](https://wearewarp.com).
+**Part of [Warp Tools](https://github.com/wearewarp/warp-tools)** — Free, open-source logistics systems built by [Warp](https://wearewarp.com).
