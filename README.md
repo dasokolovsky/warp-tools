@@ -39,6 +39,7 @@ Every system works standalone with a local SQLite database. No cloud accounts, n
 | [**Rate Management**](apps/rate-management/) | Emailed rate sheets, manual comparisons | ✅ Available |
 | [**Mini TMS**](apps/shipment-management/) | All of the above glued together | ✅ Available |
 | [**Customer Portal**](apps/customer-portal/) | Phone calls asking "where's my freight?" | ✅ Available |
+| [**Fleet Maintenance**](apps/fleet-maintenance/) | Spreadsheet PM schedules, missed inspections, surprise breakdowns | ✅ Available |
 
 Each system works standalone. Together they're a platform — systems share carriers, rates, documents, and invoices across a unified schema.
 
@@ -94,6 +95,7 @@ npm run dev                  # start dev server
 | Settlement Calculator | 3016 | `cd apps/settlement-calculator && npm run dev` |
 | Freight Parser | 3017 | `cd apps/freight-parser && npm run dev` |
 | Customer Portal | 3018 | `cd apps/customer-portal && npm run dev` |
+| Fleet Maintenance | 3019 | `cd apps/fleet-maintenance && npm run dev` |
 
 > **Systems** (carrier-management through shipment-management) require `npm run db:migrate` before first run. **Micro-tools** (calculators) have no database — just `npm run dev`.
 
@@ -113,6 +115,7 @@ docker compose up driver-settlements    # → http://localhost:3007
 docker compose up rate-management       # → http://localhost:3008
 docker compose up shipment-management   # → http://localhost:3009
 docker compose up customer-portal        # → http://localhost:3018
+docker compose up fleet-maintenance       # → http://localhost:3019
 
 # Run any calculator (no database needed)
 docker compose up ifta-calculator       # → http://localhost:3010
