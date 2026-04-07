@@ -34,6 +34,7 @@ async function seed() {
   console.log('Seeding carriers...');
 
   // Clear existing data
+  await db.delete(schema.carrierVetting);
   await db.delete(schema.carrierPerformance);
   await db.delete(schema.carrierRates);
   await db.delete(schema.carrierInsurance);
@@ -63,6 +64,10 @@ async function seed() {
       overallScore: 94.2,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'approved',
+      vettingScore: 100,
+      approvedAt: pastDate(30) + 'T00:00:00Z',
+      approvedBy: 'Admin',
     },
     {
       id: 'c2',
@@ -84,6 +89,8 @@ async function seed() {
       overallScore: 88.5,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'in_progress',
+      vettingScore: 60,
     },
     {
       id: 'c3',
@@ -105,6 +112,10 @@ async function seed() {
       overallScore: 91.0,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'approved',
+      vettingScore: 90,
+      approvedAt: pastDate(15) + 'T00:00:00Z',
+      approvedBy: 'Admin',
     },
     {
       id: 'c4',
@@ -126,6 +137,8 @@ async function seed() {
       overallScore: 79.3,
       authorityStatus: 'active',
       safetyRating: 'conditional',
+      vettingStatus: 'in_progress',
+      vettingScore: 40,
     },
     {
       id: 'c5',
@@ -147,6 +160,8 @@ async function seed() {
       overallScore: 85.7,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'in_progress',
+      vettingScore: 50,
     },
     {
       id: 'c6',
@@ -168,6 +183,8 @@ async function seed() {
       overallScore: 82.1,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'not_started',
+      vettingScore: 0,
     },
     {
       id: 'c7',
@@ -189,6 +206,8 @@ async function seed() {
       overallScore: 96.8,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'vetted',
+      vettingScore: 80,
     },
     {
       id: 'c8',
@@ -210,6 +229,8 @@ async function seed() {
       overallScore: 71.4,
       authorityStatus: 'active',
       safetyRating: 'conditional',
+      vettingStatus: 'not_started',
+      vettingScore: 0,
     },
     {
       id: 'c9',
@@ -231,6 +252,8 @@ async function seed() {
       overallScore: 89.6,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'in_progress',
+      vettingScore: 30,
     },
     {
       id: 'c10',
@@ -252,6 +275,10 @@ async function seed() {
       overallScore: 67.2,
       authorityStatus: 'active',
       safetyRating: 'satisfactory',
+      vettingStatus: 'rejected',
+      vettingScore: 20,
+      rejectedAt: pastDate(10) + 'T00:00:00Z',
+      rejectionReason: 'Insurance lapsed. Do not use until renewed and re-vetted.',
     },
   ];
 
@@ -397,6 +424,90 @@ async function seed() {
     await db.insert(schema.carrierPerformance).values(perf).onConflictDoNothing();
   }
   console.log(`Inserted ${performance.length} performance records`);
+
+  // ─── Carrier Vetting ─────────────────────────────────────────────────────
+
+  console.log('Seeding carrier vetting records...');
+
+  const vettingRecords: schema.NewCarrierVetting[] = [
+    // c1 - Apex - fully approved, all checks passed
+    { carrierId: 'c1', checkType: 'authority', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Active MC, verified via FMCSA' },
+    { carrierId: 'c1', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'cargo_coverage', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'general_liability', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'workers_comp', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Satisfactory rating confirmed' },
+    { carrierId: 'c1', checkType: 'w9_received', status: 'passed', checkedAt: pastDate(35) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'contract_signed', status: 'passed', checkedAt: pastDate(34) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c1', checkType: 'reference_checked', status: 'passed', checkedAt: pastDate(34) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Verified 3 broker references' },
+    { carrierId: 'c1', checkType: 'drug_testing', status: 'passed', checkedAt: pastDate(34) + 'T00:00:00Z', checkedBy: 'Admin' },
+
+    // c3 - Pacific Coast - fully approved
+    { carrierId: 'c3', checkType: 'authority', status: 'passed', checkedAt: pastDate(20) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(20) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'cargo_coverage', status: 'passed', checkedAt: pastDate(20) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(20) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'w9_received', status: 'passed', checkedAt: pastDate(20) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'contract_signed', status: 'passed', checkedAt: pastDate(19) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'general_liability', status: 'passed', checkedAt: pastDate(19) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'workers_comp', status: 'waived', checkedAt: pastDate(19) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Owner-operator, waived' },
+    { carrierId: 'c3', checkType: 'reference_checked', status: 'passed', checkedAt: pastDate(18) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c3', checkType: 'drug_testing', status: 'passed', checkedAt: pastDate(18) + 'T00:00:00Z', checkedBy: 'Admin' },
+
+    // c2 - Midwest - in progress, partial checks done
+    { carrierId: 'c2', checkType: 'authority', status: 'passed', checkedAt: pastDate(5) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c2', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(5) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c2', checkType: 'cargo_coverage', status: 'passed', checkedAt: pastDate(5) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c2', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(5) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c2', checkType: 'w9_received', status: 'passed', checkedAt: pastDate(4) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c2', checkType: 'contract_signed', status: 'pending', notes: 'Awaiting signed carrier agreement' },
+    { carrierId: 'c2', checkType: 'reference_checked', status: 'pending', notes: 'Need to call 2 broker references' },
+
+    // c4 - Blue Ridge - in progress, some checks
+    { carrierId: 'c4', checkType: 'authority', status: 'passed', checkedAt: pastDate(3) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c4', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(3) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c4', checkType: 'safety_rating', status: 'failed', checkedAt: pastDate(3) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Conditional rating — requires review' },
+    { carrierId: 'c4', checkType: 'w9_received', status: 'pending' },
+    { carrierId: 'c4', checkType: 'contract_signed', status: 'pending' },
+
+    // c5 - Lone Star - in progress
+    { carrierId: 'c5', checkType: 'authority', status: 'passed', checkedAt: pastDate(2) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c5', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(2) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c5', checkType: 'cargo_coverage', status: 'passed', checkedAt: pastDate(2) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c5', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(2) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c5', checkType: 'w9_received', status: 'pending', notes: 'W-9 requested, awaiting response' },
+    { carrierId: 'c5', checkType: 'contract_signed', status: 'pending' },
+
+    // c7 - Sunrise - vetted (all required done, not yet formally approved)
+    { carrierId: 'c7', checkType: 'authority', status: 'passed', checkedAt: pastDate(7) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(7) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'cargo_coverage', status: 'passed', checkedAt: pastDate(7) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(7) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'w9_received', status: 'passed', checkedAt: pastDate(7) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'contract_signed', status: 'passed', checkedAt: pastDate(6) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'general_liability', status: 'passed', checkedAt: pastDate(6) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c7', checkType: 'drug_testing', status: 'passed', checkedAt: pastDate(6) + 'T00:00:00Z', checkedBy: 'Admin' },
+
+    // c9 - Coastal - in progress
+    { carrierId: 'c9', checkType: 'authority', status: 'passed', checkedAt: pastDate(1) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c9', checkType: 'insurance_verified', status: 'passed', checkedAt: pastDate(1) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c9', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(1) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c9', checkType: 'w9_received', status: 'pending' },
+    { carrierId: 'c9', checkType: 'contract_signed', status: 'pending' },
+
+    // c10 - Swift River - rejected, has some failed checks
+    { carrierId: 'c10', checkType: 'authority', status: 'passed', checkedAt: pastDate(15) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c10', checkType: 'insurance_verified', status: 'failed', checkedAt: pastDate(15) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Auto liability expired — DO NOT USE' },
+    { carrierId: 'c10', checkType: 'cargo_coverage', status: 'failed', checkedAt: pastDate(15) + 'T00:00:00Z', checkedBy: 'Admin', notes: 'Cargo policy expired' },
+    { carrierId: 'c10', checkType: 'safety_rating', status: 'passed', checkedAt: pastDate(15) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c10', checkType: 'w9_received', status: 'passed', checkedAt: pastDate(15) + 'T00:00:00Z', checkedBy: 'Admin' },
+    { carrierId: 'c10', checkType: 'contract_signed', status: 'passed', checkedAt: pastDate(14) + 'T00:00:00Z', checkedBy: 'Admin' },
+  ];
+
+  for (const vetting of vettingRecords) {
+    await db.insert(schema.carrierVetting).values(vetting).onConflictDoNothing();
+  }
+  console.log(`Inserted ${vettingRecords.length} vetting records`);
 
   console.log('\n✅ Seed complete! Database is ready.');
 }

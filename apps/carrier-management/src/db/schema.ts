@@ -32,6 +32,13 @@ export const carriers = sqliteTable('carriers', {
   overallScore: real('overall_score'),
   authorityStatus: text('authority_status', { enum: ['active', 'inactive', 'revoked', 'unknown'] }).default('unknown'),
   safetyRating: text('safety_rating', { enum: ['satisfactory', 'conditional', 'unsatisfactory', 'not_rated', 'unknown'] }).default('unknown'),
+  vettingStatus: text('vetting_status', { enum: ['not_started', 'in_progress', 'vetted', 'approved', 'rejected'] }).default('not_started'),
+  vettingScore: integer('vetting_score'),
+  approvedAt: text('approved_at'),
+  approvedBy: text('approved_by'),
+  rejectedAt: text('rejected_at'),
+  rejectionReason: text('rejection_reason'),
+  onboardingNotes: text('onboarding_notes'),
   createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
   updatedAt: text('updated_at').notNull().default(sql`(datetime('now'))`),
 });
@@ -115,3 +122,33 @@ export type CarrierRate = typeof carrierRates.$inferSelect;
 export type NewCarrierRate = typeof carrierRates.$inferInsert;
 export type CarrierPerformance = typeof carrierPerformance.$inferSelect;
 export type NewCarrierPerformance = typeof carrierPerformance.$inferInsert;
+
+// ─── Carrier Vetting ─────────────────────────────────────────────────────────
+
+export const carrierVetting = sqliteTable('carrier_vetting', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  carrierId: text('carrier_id').notNull().references(() => carriers.id, { onDelete: 'cascade' }),
+  checkType: text('check_type', {
+    enum: [
+      'authority',
+      'insurance_verified',
+      'safety_rating',
+      'w9_received',
+      'contract_signed',
+      'reference_checked',
+      'drug_testing',
+      'cargo_coverage',
+      'general_liability',
+      'workers_comp',
+    ],
+  }).notNull(),
+  status: text('status', { enum: ['pending', 'passed', 'failed', 'waived', 'expired'] }).default('pending'),
+  checkedAt: text('checked_at'),
+  checkedBy: text('checked_by'),
+  notes: text('notes'),
+  expiryDate: text('expiry_date'),
+  createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
+});
+
+export type CarrierVetting = typeof carrierVetting.$inferSelect;
+export type NewCarrierVetting = typeof carrierVetting.$inferInsert;

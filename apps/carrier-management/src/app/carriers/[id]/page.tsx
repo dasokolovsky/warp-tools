@@ -8,6 +8,7 @@ import {
   carrierInsurance,
   carrierRates,
   carrierPerformance,
+  carrierVetting,
 } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
@@ -28,6 +29,7 @@ import { InsuranceActions } from './InsuranceActions';
 import { AddRateButton } from './AddRateButton';
 import { RateActions } from './RateActions';
 import { RequestCertButton } from '@/components/RequestCertButton';
+import { VettingTab } from './VettingTab';
 import { Pencil } from 'lucide-react';
 
 const equipLabels: Record<string, string> = {
@@ -68,7 +70,7 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
   const [carrier] = await db.select().from(carriers).where(eq(carriers.id, id));
   if (!carrier) notFound();
 
-  const [contacts, insurance, rates, performance] = await Promise.all([
+  const [contacts, insurance, rates, performance, vettingChecks] = await Promise.all([
     db.select().from(carrierContacts).where(eq(carrierContacts.carrierId, id)),
     db.select().from(carrierInsurance).where(eq(carrierInsurance.carrierId, id)),
     db.select().from(carrierRates).where(eq(carrierRates.carrierId, id)),
@@ -77,6 +79,7 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
       .from(carrierPerformance)
       .where(eq(carrierPerformance.carrierId, id))
       .orderBy(carrierPerformance.recordedAt),
+    db.select().from(carrierVetting).where(eq(carrierVetting.carrierId, id)),
   ]);
 
   const equip: string[] = JSON.parse(carrier.equipmentTypes ?? '[]');
@@ -114,7 +117,7 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
       (perf.filter((p) => p.communicationScore != null).length || 1)
     : null;
 
-  const tabs = ['overview', 'contacts', 'insurance', 'rates', 'performance'];
+  const tabs = ['overview', 'contacts', 'insurance', 'rates', 'performance', 'vetting'];
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto">
@@ -473,6 +476,11 @@ export default async function CarrierDetailPage({ params, searchParams }: PagePr
               )}
             </div>
           </div>
+        )}
+
+        {/* ── VETTING ── */}
+        {tab === 'vetting' && (
+          <VettingTab carrier={carrier} initialChecks={vettingChecks} />
         )}
 
         {/* ── PERFORMANCE ── */}

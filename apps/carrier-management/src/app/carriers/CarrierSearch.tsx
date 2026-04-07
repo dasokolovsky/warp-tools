@@ -20,6 +20,7 @@ interface CarrierSearchProps {
   initialEquipment?: string;
   initialScore?: string;
   initialCompliance?: string;
+  initialVetting?: string;
 }
 
 export function CarrierSearch({
@@ -28,6 +29,7 @@ export function CarrierSearch({
   initialEquipment,
   initialScore,
   initialCompliance,
+  initialVetting,
 }: CarrierSearchProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -60,7 +62,7 @@ export function CarrierSearch({
     updateParams({ equipment: next.join(',') || null });
   };
 
-  const hasFilters = !!(initialSearch || (initialStatus && initialStatus !== 'all') || selectedEquip.length || (initialScore && initialScore !== 'all') || (initialCompliance && initialCompliance !== 'all'));
+  const hasFilters = !!(initialSearch || (initialStatus && initialStatus !== 'all') || selectedEquip.length || (initialScore && initialScore !== 'all') || (initialCompliance && initialCompliance !== 'all') || (initialVetting && initialVetting !== 'all'));
 
   const clearAll = () => {
     startTransition(() => router.push('/carriers'));
@@ -120,6 +122,21 @@ export function CarrierSearch({
           <option value="ok">OK</option>
           <option value="expiring_soon">Expiring Soon</option>
           <option value="expired">Expired</option>
+        </select>
+
+        {/* Vetting status */}
+        <select
+          defaultValue={initialVetting ?? 'all'}
+          onChange={(e) => updateParams({ vetting: e.target.value })}
+          className="px-3 py-2 rounded-xl bg-[#080F1E] border border-[#1A2235] text-sm text-[#8B95A5] focus:outline-none focus:border-[#00C650]/50 transition-colors cursor-pointer"
+        >
+          <option value="all">All Vetting</option>
+          <option value="pending">Pending Vetting</option>
+          <option value="not_started">Not Started</option>
+          <option value="in_progress">In Progress</option>
+          <option value="vetted">Vetted</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
         </select>
 
         {/* Clear */}

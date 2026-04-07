@@ -23,6 +23,13 @@ const UpdateCarrierSchema = z.object({
   authorityStatus: z.enum(['active', 'inactive', 'revoked', 'unknown']).optional(),
   safetyRating: z.enum(['satisfactory', 'conditional', 'unsatisfactory', 'not_rated', 'unknown']).optional(),
   overallScore: z.number().optional().nullable(),
+  vettingStatus: z.enum(['not_started', 'in_progress', 'vetted', 'approved', 'rejected']).optional(),
+  vettingScore: z.number().optional().nullable(),
+  approvedAt: z.string().optional().nullable(),
+  approvedBy: z.string().optional().nullable(),
+  rejectedAt: z.string().optional().nullable(),
+  rejectionReason: z.string().optional().nullable(),
+  onboardingNotes: z.string().optional().nullable(),
 });
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

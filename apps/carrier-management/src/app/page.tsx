@@ -2,7 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import { db } from '@/db';
 import { carriers, carrierInsurance, carrierContacts } from '@/db/schema';
-import { eq, count, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
+import { ClipboardCheck } from 'lucide-react';
 import Link from 'next/link';
 import { AlertTriangle, CheckCircle, XCircle, Truck, TrendingUp, Plus } from 'lucide-react';
 import { StatusBadge } from '@/components/StatusBadge';
@@ -11,8 +12,13 @@ import { formatDate } from '@/lib/utils';
 import { RequestCertButton } from '@/components/RequestCertButton';
 
 async function getDashboardData() {
-  const [allCarriers, allInsurance, allContacts] = await Promise.all([
-    db.select().from(carriers),
+  const allCarriers = await db.select().from(carriers);
+
+  const pendingVetting = allCarriers.filter(
+    (c) => c.vettingStatus === 'not_started' || c.vettingStatus === 'in_progress'
+  );
+
+  const [allInsurance, allContacts] = await Promise.all([
     db
       .select({
         id: carrierInsurance.id,
@@ -55,7 +61,7 @@ async function getDashboardData() {
     .sort((a, b) => (b.overallScore ?? 0) - (a.overallScore ?? 0))
     .slice(0, 5);
 
-  return { allCarriers, expired, expiringSoon, activeCount, avgScore, topCarriers, primaryContactMap };
+  return { allCarriers, expired, expiringSoon, activeCount, avgScore, topCarriers, primaryContactMap, pendingVetting };
 }
 
 const typeLabels: Record<string, string> = {
@@ -66,7 +72,7 @@ const typeLabels: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  const { allCarriers, expired, expiringSoon, activeCount, avgScore, topCarriers, primaryContactMap } =
+  const { allCarriers, expired, expiringSoon, activeCount, avgScore, topCarriers, primaryContactMap, pendingVetting } =
     await getDashboardData();
 
   const uniqueExpiredCarriers = new Set(expired.map((i) => i.carrierId)).size;
@@ -88,6 +94,31 @@ export default async function DashboardPage() {
           Add Carrier
         </Link>
       </div>
+
+      {/* Vetting Alert */}
+      {pendingVetting.length > 0 && (
+        <div className="mb-4">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-[#3B82F6]/5 border border-[#3B82F6]/20">
+            <ClipboardCheck className="h-5 w-5 text-[#3B82F6] mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-[#3B82F6]">
+                {pendingVetting.length} carrier{pendingVetting.length !== 1 ? 's' : ''} pending vetting
+              </div>
+              <div className="text-xs text-[#3B82F6]/70 mt-0.5">
+                Complete carrier vetting before tendering loads to unvetted carriers.
+              </div>
+              <div className="mt-2">
+                <Link
+                  href="/carriers?vetting=pending"
+                  className="text-xs text-[#3B82F6] underline underline-offset-2 hover:no-underline"
+                >
+                  View unvetted carriers →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Compliance Alerts */}
       {(expired.length > 0 || expiringSoon.length > 0) && (

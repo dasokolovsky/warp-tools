@@ -21,6 +21,14 @@
 - ✅ **Mobile Responsive** — Usable on phone with card layout and collapsible sidebar
 - ✅ **Dark Theme** — Modern dark UI, easy on the eyes
 - ✅ **REST API** — Full CRUD API for integrations
+- ✅ **Carrier Vetting Workflow** — Compliance checklist with 10 check types (authority, insurance, safety rating, W-9, contract, references, drug testing) per carrier
+- ✅ **Vetting Status Tracking** — Track onboarding state: Not Started → In Progress → Vetted → Approved / Rejected
+- ✅ **FMCSA Simulated Lookup** — Verify carrier authority status, safety rating, and insurance via MC number (FMCSA SAFER API-ready)
+- ✅ **Auto-fill from FMCSA** — One-click update of carrier record and vetting checks from FMCSA lookup results
+- ✅ **Approve / Reject Workflow** — Approve carriers when minimum checks pass; reject with reason; re-open vetting
+- ✅ **Vetting Progress Bar** — Visual 0–100% onboarding completion per carrier
+- ✅ **Pending Vetting Dashboard Alert** — Dashboard card showing count of carriers still needing vetting
+- ✅ **Vetting Column in Carrier List** — Status badge per carrier with filter by vetting state
 
 ## Screenshots
 
@@ -136,6 +144,18 @@ All endpoints accept and return JSON.
 |--------|----------|-------------|
 | `POST` | `/api/carriers/:id/performance` | Log a performance record |
 
+### Vetting
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/carriers/:id/vetting` | List vetting checks for a carrier |
+| `POST` | `/api/carriers/:id/vetting` | Create a vetting check |
+| `PATCH` | `/api/carriers/:id/vetting/:checkId` | Update a vetting check status/notes |
+| `DELETE` | `/api/carriers/:id/vetting/:checkId` | Delete a vetting check |
+| `POST` | `/api/carriers/:id/approve` | Approve carrier (sets vetting_status=approved) |
+| `POST` | `/api/carriers/:id/reject` | Reject carrier with reason |
+| `GET` | `/api/carriers/fmcsa-lookup?mc=MC-123456` | FMCSA simulated lookup by MC number |
+
 ### Dashboard
 
 | Method | Endpoint | Description |
@@ -209,7 +229,7 @@ Want to contribute? Here are concrete features that would make this system even 
 ### 🟡 Medium
 
 - **Bulk import** — CSV upload to import carrier list from spreadsheet (most users are migrating from Excel)
-- **FMCSA API integration** — Auto-lookup carrier info from MC/DOT number via [SAFER Web](https://safer.fmcsa.dot.gov/)
+- ✅ **FMCSA API integration** — Auto-lookup carrier info from MC/DOT number via [SAFER Web](https://safer.fmcsa.dot.gov/) — simulated in v1, ready to wire to live API
 - **Rate trend charts** — Visualize rate changes over time per lane with line/bar charts
 - **Saved views** — Save filter combinations as named views ("My Top Carriers", "Expiring This Month")
 - **Activity log** — Track who changed what and when (audit trail)

@@ -61,6 +61,7 @@ interface PageProps {
     equipment?: string;
     score?: string;
     compliance?: string;
+    vetting?: string;
     sortBy?: string;
     sortDir?: string;
     page?: string;
@@ -74,6 +75,7 @@ export default async function CarriersPage({ searchParams }: PageProps) {
   const equipmentFilter = params.equipment;
   const scoreFilter = params.score;
   const complianceFilter = params.compliance;
+  const vettingFilter = params.vetting;
   const sortBy = (params.sortBy as SortBy) || 'name';
   const sortDir = (params.sortDir as SortDir) || 'asc';
   const page = Math.max(1, parseInt(params.page ?? '1', 10));
@@ -133,6 +135,15 @@ export default async function CarriersPage({ searchParams }: PageProps) {
     });
   }
 
+  if (vettingFilter && vettingFilter !== 'all') {
+    filtered = filtered.filter((c) => {
+      if (vettingFilter === 'pending') {
+        return c.vettingStatus === 'not_started' || c.vettingStatus === 'in_progress';
+      }
+      return c.vettingStatus === vettingFilter;
+    });
+  }
+
   // ── Sort ─────────────────────────────────────────────────────────────────
   const mult = sortDir === 'asc' ? 1 : -1;
   filtered.sort((a, b) => {
@@ -166,6 +177,7 @@ export default async function CarriersPage({ searchParams }: PageProps) {
   if (equipmentFilter) qp.set('equipment', equipmentFilter);
   if (scoreFilter) qp.set('score', scoreFilter);
   if (complianceFilter) qp.set('compliance', complianceFilter);
+  if (vettingFilter) qp.set('vetting', vettingFilter);
 
   const sortCols: { col: SortBy; label: string }[] = [
     { col: 'name', label: 'Carrier' },
@@ -198,6 +210,7 @@ export default async function CarriersPage({ searchParams }: PageProps) {
         initialEquipment={equipmentFilter}
         initialScore={scoreFilter}
         initialCompliance={complianceFilter}
+        initialVetting={vettingFilter}
       />
 
       {/* Table */}
@@ -235,6 +248,9 @@ export default async function CarriersPage({ searchParams }: PageProps) {
               <th className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3">
                 Insurance
               </th>
+              <th className="text-left text-xs font-semibold text-[#8B95A5] uppercase tracking-wide px-4 py-3">
+                Vetting
+              </th>
               <SortHeader
                 href={buildSortHref(qp, 'status', sortBy, sortDir)}
                 label="Status"
@@ -246,7 +262,7 @@ export default async function CarriersPage({ searchParams }: PageProps) {
           <tbody className="divide-y divide-[#1A2235]">
             {pageCarriers.length === 0 && (
               <tr>
-                <td colSpan={7} className="text-center text-[#8B95A5] py-12 text-sm">
+                <td colSpan={8} className="text-center text-[#8B95A5] py-12 text-sm">
                   No carriers match your filters.{' '}
                   <Link href="/carriers" className="text-[#00C650] underline">
                     Clear filters →
@@ -322,6 +338,11 @@ export default async function CarriersPage({ searchParams }: PageProps) {
                     </Link>
                   </td>
                   <td className="px-4 py-3.5">
+                    <Link href={`/carriers/${carrier.id}?tab=vetting`} className="block">
+                      <VettingBadgeSmall status={carrier.vettingStatus} />
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3.5">
                     <Link href={`/carriers/${carrier.id}`} className="block">
                       <StatusBadge status={carrier.status} />
                     </Link>
@@ -336,5 +357,25 @@ export default async function CarriersPage({ searchParams }: PageProps) {
       {/* Pagination */}
       <Pagination total={total} page={page} pageSize={PAGE_SIZE} />
     </div>
+  );
+}
+
+function VettingBadgeSmall({ status }: { status: string | null }) {
+  const map: Record<string, { color: string; label: string }> = {
+    not_started: { color: '#8B95A5', label: 'Not Started' },
+    in_progress: { color: '#FFAA00', label: 'In Progress' },
+    vetted: { color: '#3B82F6', label: 'Vetted' },
+    approved: { color: '#00C650', label: 'Approved' },
+    rejected: { color: '#FF4444', label: 'Rejected' },
+  };
+  const s = status ?? 'not_started';
+  const { color, label } = map[s] ?? map.not_started;
+  return (
+    <span
+      className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium"
+      style={{ color, backgroundColor: `${color}18` }}
+    >
+      {label}
+    </span>
   );
 }

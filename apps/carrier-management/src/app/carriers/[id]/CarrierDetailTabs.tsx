@@ -8,6 +8,7 @@ const tabLabels: Record<string, string> = {
   insurance: 'Insurance',
   rates: 'Rates',
   performance: 'Performance',
+  vetting: 'Vetting',
 };
 
 interface CarrierDetailTabsProps {
