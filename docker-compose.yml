@@ -184,6 +184,30 @@ services:
       - NODE_ENV=production
     restart: unless-stopped
 
+  customer-portal:
+    build:
+      context: .
+      dockerfile: apps/customer-portal/Dockerfile
+    ports:
+      - "3018:3018"
+    volumes:
+      - portal-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  fleet-maintenance:
+    build:
+      context: .
+      dockerfile: apps/fleet-maintenance/Dockerfile
+    ports:
+      - "3019:3019"
+    volumes:
+      - fleet-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
 volumes:
   carrier-data:
     driver: local
@@ -202,4 +226,8 @@ volumes:
   rate-data:
     driver: local
   shipment-data:
+    driver: local
+  portal-data:
+    driver: local
+  fleet-data:
     driver: local
